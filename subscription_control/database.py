@@ -10,16 +10,14 @@ from subscription_control.settings import Settings
 settings = Settings()
 
 # Configurações para banco de dados síncrono
+if settings.DATABASE_URL is None:
+    raise ValueError('DATABASE_URL is not set in the environment variables')
+
 sync_engine = create_engine(settings.DATABASE_URL, echo=True)
 SyncSessionLocal = sessionmaker(bind=sync_engine, expire_on_commit=False)
 
-# Configurações para banco de dados assíncrono
-async_engine = create_async_engine(
-    settings.DATABASE_URL.replace('sqlite:///', 'sqlite+aiosqlite:///'),
-    echo=True,
-)
+async_engine = create_async_engine(settings.DATABASE_URL.replace('sqlite:///', 'sqlite+aiosqlite:///'), echo=False)
 AsyncSessionLocal = sessionmaker(bind=async_engine, class_=AsyncSession, expire_on_commit=False)
-
 
 @contextmanager
 def get_sync_session() -> Generator[Session, None, None]:
@@ -35,7 +33,6 @@ def get_sync_session() -> Generator[Session, None, None]:
     finally:
         session.close()
 
-
 @asynccontextmanager
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
     """
@@ -49,7 +46,6 @@ async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
             yield session
         finally:
             await session.close()
-
 
 def get_session(async_mode: bool = False):
     """
