@@ -24,7 +24,7 @@ class ContentProvider:
     id: Mapped[int] = mapped_column(init=False, primary_key=True, autoincrement=True, unique=True)
     name: Mapped[str] = mapped_column(unique=True, nullable=False)
     description: Mapped[str] = mapped_column(nullable=False)
-    email: Mapped[str] = mapped_column(nullable=False)
+    email: Mapped[str] = mapped_column(unique=True, nullable=False)
     api_engine_module_name: Mapped[str] = mapped_column(unique=True, nullable=False)
     created_at: Mapped[datetime] = mapped_column(
         init=False,
@@ -47,7 +47,6 @@ class Product:
     __tablename__ = 'products'
 
     __table_args__ = (
-        Index('idx_product_id', 'id'),
         UniqueConstraint('content_provider_id', 'ext_id', name='uq_content_provider_ext_id'),
     )
     content_provider_id: Mapped[int] = mapped_column(ForeignKey('content_providers.id'), nullable=False)
@@ -69,5 +68,27 @@ class Product:
         comment='Record last update timestamp',
     )
 
+@table_registry.mapped_as_dataclass
+class Consumer:
+    """
+    SQLAlchemy model for consumer table
+    """
+    __tablename__ = 'consumer'
+
+    id: Mapped[int] = mapped_column(init=False, primary_key=True, autoincrement=True, unique=True)
+    name: Mapped[str] = mapped_column(unique=False, nullable=False)
+    email: Mapped[str] = mapped_column(unique=True, nullable=False)
+    
+    created_at: Mapped[datetime] = mapped_column(
+        init=False,
+        server_default=func.now(),
+        comment='Record creation timestamp',
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        init=False,
+        server_default=func.now(),
+        onupdate=func.now(),
+        comment='Record last update timestamp',
+    )
 
 table_registry.metadata.create_all(bind=sync_engine)

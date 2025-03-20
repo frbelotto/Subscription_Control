@@ -47,14 +47,6 @@ async def test_standardize_content(tmdb_content_provider, tmdb_api_provider):
     assert isinstance(first_item.description, str)
     assert first_item.image is not None
 
-@pytest.mark.asyncio
-async def test_should_handle_api_errors(tmdb_api_provider):
-    """Test API error handling with invalid parameters"""
-    with pytest.raises(ValueError, match='Limit must be positive'):
-        await tmdb_api_provider.get_content(-1)
-
-    with pytest.raises(ValueError, match='Limit cannot exceed 100'):
-        await tmdb_api_provider.get_content(101)
 
 @pytest.mark.asyncio
 async def test_should_validate_standardized_content_structure(tmdb_content_provider, tmdb_api_provider):

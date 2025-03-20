@@ -10,6 +10,7 @@ myclassconfig = {
     'validate_default': True,
     'validate_assignment': True,
     'extra': 'forbid',
+    'from_attributes':True
 }
 
 class SchemaContentProviderBase(BaseModel):
@@ -32,7 +33,7 @@ class SchemaContentProvider(SchemaContentProviderBase):
     """
     Complete schema for content provider with database fields
     """
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(**myclassconfig)
     id: int
     created_at: datetime
     updated_at: datetime
@@ -53,7 +54,7 @@ class SchemaProduct(SchemaProductBase):
     """
     Complete schema for product with database fields
     """
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(**myclassconfig)
     id: int
     created_at: datetime
     updated_at: datetime
@@ -69,3 +70,14 @@ class ContentProviderSystem(ABC):
     @abstractmethod
     def standardize_content(self, content: list[dict]) -> list[SchemaProductBase]:
         pass
+
+class SchemaConsumer (BaseModel):
+    """
+    Complete schema for product consumer
+    """
+    model_config = ConfigDict(**myclassconfig)
+    name : str
+    email : EmailStr
+
+
+        

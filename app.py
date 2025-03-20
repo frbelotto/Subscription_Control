@@ -2,7 +2,7 @@ from http import HTTPStatus
 
 from fastapi import FastAPI
 
-from subscription_control.router.catalog_engine import catalog_router
+from subscription_control.router.catalog_engine import content_providers_router, product_handler_router
 
 app = FastAPI(
     title='Subscription Control API',
@@ -12,7 +12,8 @@ app = FastAPI(
     redoc_url='/redoc',
 )
 
-app.include_router(catalog_router)
+app.include_router(content_providers_router)
+app.include_router(product_handler_router)
 
 
 @app.get(

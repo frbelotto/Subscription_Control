@@ -10,7 +10,7 @@ from subscription_control.models import ContentProvider
 from subscription_control.schemas import SchemaContentProvider, SchemaContentProviderBase
 
 
-@validate_call(validate_return=False, config=ConfigDict(arbitrary_types_allowed=True))
+@validate_call(validate_return=True, config=ConfigDict(arbitrary_types_allowed=True))
 async def create_content_provider(content: SchemaContentProviderBase) -> SchemaContentProvider | Dict[str, Any]:
     """
     Creates a new content provider.

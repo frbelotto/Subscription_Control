@@ -25,11 +25,6 @@ class ApiProvider(ContentProviderSystem):
         The limit parameter is used to limit the number of results fetched, if it is not provided all the results will be fetched.
         The results attribute will be a list of dictionaries, each dictionary will have the keys 'name' and 'url', kept under the results key.
         """
-        if limit is not None:
-            if limit <= 0:
-                raise ValueError('Limit must be positive')
-            if limit > 100:
-                raise ValueError('Limit cannot exceed 100')
 
         self.results = []
         url = 'https://pokeapi.co/api/v2/pokemon/'

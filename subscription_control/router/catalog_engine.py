@@ -20,9 +20,9 @@ from subscription_control.content_providers.products_handler import update_produ
 
 logger = logging.getLogger(__name__)
 
-catalog_router = APIRouter(prefix='/content_provider', tags=['content_providers'])
+content_providers_router = APIRouter(prefix='/content_provider', tags=['content_providers'])
 
-@catalog_router.post('/', status_code=HTTPStatus.CREATED, response_model=SchemaContentProvider, responses={400: {'model': dict}, 500: {'model': dict}})
+@content_providers_router.post('/', status_code=HTTPStatus.CREATED, response_model=SchemaContentProvider, responses={400: {'model': dict}, 500: {'model': dict}})
 async def input_content_provider(content: SchemaContentProviderBase) -> SchemaContentProvider:
     """
     Create a new content provider.
@@ -50,7 +50,7 @@ async def input_content_provider(content: SchemaContentProviderBase) -> SchemaCo
         logger.exception('Unexpected error while creating content provider')
         raise HTTPException(status_code=HTTPStatus.INTERNAL_SERVER_ERROR, detail='An unexpected error occurred')
 
-@catalog_router.get('/', status_code=HTTPStatus.OK, response_model=list[SchemaContentProvider] | dict, responses={200: {'model': list[SchemaContentProvider]}, 400: {'model': dict}, 500: {'model': dict}})
+@content_providers_router.get('/', status_code=HTTPStatus.OK, response_model=list[SchemaContentProvider] | dict, responses={200: {'model': list[SchemaContentProvider]}, 400: {'model': dict}, 500: {'model': dict}})
 async def show_content_providers(id: int | None = None, name: str | None = None, description: str | None = None, email: str | None = None, api_engine_module_name: str | None = None) -> list[SchemaContentProvider] | dict:
     """
     Retrieve content providers with optional filtering.
@@ -84,7 +84,7 @@ async def show_content_providers(id: int | None = None, name: str | None = None,
         logger.exception('Unexpected error while retrieving content providers')
         raise HTTPException(status_code=HTTPStatus.INTERNAL_SERVER_ERROR, detail=f'An unexpected error occurred: {str(e)}')
 
-@catalog_router.delete('/', status_code=HTTPStatus.NO_CONTENT, responses={204: {'description': 'Content provider deleted successfully'}, 400: {'model': dict}, 404: {'model': dict}, 500: {'model': dict}})
+@content_providers_router.delete('/', status_code=HTTPStatus.NO_CONTENT, responses={204: {'description': 'Content provider deleted successfully'}, 400: {'model': dict}, 404: {'model': dict}, 500: {'model': dict}})
 async def delete_content_provider_route(content_provider_id: Optional[int] = None) -> None:
     """
     Delete a content provider by ID.
@@ -110,7 +110,9 @@ async def delete_content_provider_route(content_provider_id: Optional[int] = Non
         logger.exception('Unexpected error while deleting content provider')
         raise HTTPException(status_code=HTTPStatus.INTERNAL_SERVER_ERROR, detail=f'An unexpected error occurred: {str(e)}')
 
-@catalog_router.post('/update_products', status_code=HTTPStatus.OK, response_model=List[SchemaProductBase] | dict, responses={200: {'model': List[SchemaProductBase]}, 500: {'model': dict}})
+product_handler_router = APIRouter(prefix='/product_handler', tags=['product_handler'])
+
+@product_handler_router.post('/update_products', status_code=HTTPStatus.OK, response_model=List[SchemaProductBase] | dict, responses={200: {'model': List[SchemaProductBase]}, 500: {'model': dict}})
 async def start_update_products(content_provider_id: Optional[int] = None, limit: Optional[int] = 10) -> List[SchemaProductBase] | dict:
     """
     Start the update process for products.
@@ -128,7 +130,7 @@ async def start_update_products(content_provider_id: Optional[int] = None, limit
         logger.exception('Unexpected error while updating products')
         raise HTTPException(status_code=HTTPStatus.INTERNAL_SERVER_ERROR, detail=f'An unexpected error occurred: {str(e)}')
 
-@catalog_router.delete('/remove_products', status_code=HTTPStatus.NO_CONTENT, responses={204: {'description': 'Products removed successfully'}, 500: {'model': dict}})
+@product_handler_router.delete('/remove_products', status_code=HTTPStatus.NO_CONTENT, responses={204: {'description': 'Products removed successfully'}, 500: {'model': dict}})
 async def start_remove_products(content_provider_id: Optional[int] = None) -> None:
     """
     Remove products from the database.
@@ -145,7 +147,7 @@ async def start_remove_products(content_provider_id: Optional[int] = None) -> No
         logger.exception('Unexpected error while removing products')
         raise HTTPException(status_code=HTTPStatus.INTERNAL_SERVER_ERROR, detail=f'An unexpected error occurred: {str(e)}')
 
-@catalog_router.get('/list_products', status_code=HTTPStatus.OK, response_model=List[SchemaProduct] | dict, responses={200: {'model': List[SchemaProduct]}, 500: {'model': dict}})
+@product_handler_router.get('/list_products', status_code=HTTPStatus.OK, response_model=List[SchemaProduct] | dict, responses={200: {'model': List[SchemaProduct]}, 500: {'model': dict}})
 async def start_list_products(content_provider_id: Optional[int] = None) -> List[SchemaProduct] | dict:
     """
     List products from the database.

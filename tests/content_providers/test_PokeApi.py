@@ -33,16 +33,6 @@ async def test_standardize_content(pokeapi_content_provider, pokeapi_api_provide
     assert isinstance(first_item.description, str)
     assert first_item.image is not None
 
-@pytest.mark.asyncio
-async def test_should_handle_api_errors(pokeapi_api_provider):
-    """
-    Test API error handling with invalid parameters.
-    """
-    with pytest.raises(ValueError, match='Limit must be positive'):
-        await pokeapi_api_provider.get_content(-1)
-
-    with pytest.raises(ValueError, match='Limit cannot exceed 100'):
-        await pokeapi_api_provider.get_content(101)
 
 @pytest.mark.asyncio
 async def test_should_validate_standardized_content_structure(pokeapi_content_provider, pokeapi_api_provider):

@@ -39,6 +39,8 @@ def set_global_session(monkeypatch, async_session):
     """
     monkeypatch.setattr('subscription_control.content_providers.content_providers.get_session', lambda async_mode=True: async_session)
     monkeypatch.setattr('subscription_control.content_providers.products_handler.get_session', lambda async_mode=True: async_session)
+    monkeypatch.setattr('subscription_control.consumer.consumer_handler.get_session', lambda async_mode=True: async_session)
+
 
 @pytest_asyncio.fixture
 async def tmdb_content_provider():
