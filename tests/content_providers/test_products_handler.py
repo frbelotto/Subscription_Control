@@ -2,7 +2,7 @@ import pytest
 
 from subscription_control.content_providers.content_providers import create_content_provider, list_content_provider
 from subscription_control.logger import logger
-from subscription_control.schemas import SchemaContentProviderBase, SchemaProductBase
+from subscription_control.schemas import SchemaContentProviderBase
 from subscription_control.content_providers.products_handler import update_products, remove_products, list_products
 
 @pytest.fixture

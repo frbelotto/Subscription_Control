@@ -22,7 +22,7 @@ class MeuManipulador(logging.Handler):
 logger.addHandler(MeuManipulador())
 
 # Instância que implementa o traceback
-itb = AutoFormattedTB(mode='Plain', color_scheme='LightBG', tb_offset=1)
+itb = AutoFormattedTB(mode='Plain', tb_offset=1)
 
 def custom_exc(shell, etype, evalue, tb, tb_offset=None) -> None:
     # ainda imprime a mensagem de erro

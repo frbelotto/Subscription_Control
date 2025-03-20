@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel, ConfigDict, EmailStr, HttpUrl, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, HttpUrl
 
 myclassconfig = {
     'str_strip_whitespace': True,

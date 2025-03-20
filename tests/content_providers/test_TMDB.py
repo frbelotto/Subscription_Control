@@ -1,6 +1,5 @@
 import pytest
 
-from subscription_control.content_providers.tmdb import ApiProvider
 from subscription_control.schemas import SchemaContentProviderBase, SchemaProductBase
 from subscription_control.content_providers.content_providers import create_content_provider
 

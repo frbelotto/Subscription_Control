@@ -1,55 +1,29 @@
-[tool.poetry]
+[project]
 name = "subscription-control"
 version = "0.1.0"
 description = "Initial code for a personal project aiming to create a simple subscription and payment system using essential Python tools"
-authors = ["Fábio Radicchi Belotto <fabio_belotto@hotmail.com>"]
-license = "Non-Profit Open Software License"
+authors = [
+    {name = "Fábio Radicchi Belotto", email = "fabio_belotto@hotmail.com"}
+]
+license = "NPOSL-3.0"
 readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.115.11",
+    "httpx>=0.28.1",
+    "pydantic[email]>=2.10.6",
+    "pydantic-settings>=2.8.1",
+    "sqlalchemy>=2.0.39",
+    "uvicorn>=0.34.0",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.11,<4.0"
-sqlalchemy = ">=2.0.37"
-pydantic = {extras = ["email"], version = ">=2.10.6"}
-httpx = ">=0.28.1"
-fastapi = ">=0.115.7"
-uvicorn = ">=0.34.0"
-pydantic-settings = ">=2.7.1"
+[dependency-groups]
+dev = [
+    "aiosqlite>=0.21.0",
+    "ipykernel>=6.29.5",
+    "pytest>=8.3.5",
+    "pytest-asyncio>=0.25.3",
+]
 
-
-[tool.poetry.group.dev.dependencies]
-ipykernel = ">=6.29.5"
-pandas = ">=2.2.3"
-pytest = ">=8.3.4"
-ignr = ">=2.2"
-pytest-asyncio = ">=0.25.3"
-pytest-cov = ">=6.0.0"
-aiosqlite = ">=0.21.0"
-ruff = ">=0.9.6"
-taskipy = ">=1.14.1"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.pytest.ini_options]
-addopts = "-s"
-
-[tool.ruff]
-line-length = 220
-extend-exclude = ['migrations']
-
-[tool.ruff.lint]
-preview = true
-select = ['I', 'F', 'E', 'W', 'PL', 'PT']
-
-[tool.ruff.format]
-preview = true
-quote-style = 'single'
-
-[tool.taskipy.tasks]
-lint = 'ruff check .; ruff check . --diff'
-format = 'ruff check . --fix && ruff format .'
-run = 'fastapi dev app.py'
-pre_test = 'task lint'
-test = 'pytest -s -x --cov=fast_zero -vv'
-post_test = 'coverage html'
+[tool.uv]
+python-downloads = "manual"
